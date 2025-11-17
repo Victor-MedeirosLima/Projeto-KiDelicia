@@ -24,7 +24,7 @@ namespace KiDelicia.Controllers
 
             if (clientes is null || !clientes.Any())
             {
-                return NotFound("Nenhum cliente encontrado.");
+                return NotFound(new { erro = "Nenhum cliente encontrado." });
             }
 
             return Ok(clientes);
@@ -39,7 +39,7 @@ namespace KiDelicia.Controllers
 
             if (cliente is null)
             {
-                return NotFound("Cliente não encontrado.");
+                return NotFound(new { erro = "Cliente não encontrado." });
             }
 
             return Ok(cliente);
@@ -55,7 +55,7 @@ namespace KiDelicia.Controllers
 
             if (cliente is null)
             {
-                return NotFound("Cliente não encontrado.");
+                return NotFound(new { erro = "Cliente não encontrado." });
             }
 
             return Ok(cliente);
@@ -78,7 +78,7 @@ namespace KiDelicia.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro ao criar o cliente: {ex.Message}");
+                return StatusCode(500, new { erro = $"Erro ao criar o cliente: {ex.Message}" });
             }
         }
     }

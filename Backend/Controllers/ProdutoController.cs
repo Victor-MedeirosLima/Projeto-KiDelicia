@@ -25,7 +25,7 @@ public class ProdutoController : ControllerBase
         if (produtos is null)
         {
 
-            return NotFound("Nenhum produto encontrado.");
+            return NotFound(new { erro = "Nenhum produto encontrado." });
         }
         else
         {
@@ -45,7 +45,7 @@ public class ProdutoController : ControllerBase
         if (produto is null)
         {
 
-            return NotFound("Produto não encontrado.");
+            return NotFound(new { erro = "Produto não encontrado." });
         }
         else
         {
@@ -73,7 +73,7 @@ public class ProdutoController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Erro ao criar o produto: {ex.Message}");
+            return StatusCode(500, new { erro = $"Erro ao criar o produto: {ex.Message}" });
         }
     }
 
@@ -85,13 +85,13 @@ public class ProdutoController : ControllerBase
     {
         if (id != produto.Id)
         {
-            return BadRequest("O ID informado não corresponde ao produto enviado.");
+            return BadRequest(new { erro = "O ID informado não corresponde ao produto enviado." });
         }
 
         var produtoExistente = await _produtoRepository.GetProdutoById(id);
         if (produtoExistente is null)
         {
-            return NotFound("Produto não encontrado para atualização.");
+            return NotFound(new { erro = "Produto não encontrado para atualização." });
         }
 
         try
@@ -105,11 +105,11 @@ public class ProdutoController : ControllerBase
 
 
             await _produtoRepository.UpdateProduto(produtoExistente);
-            return Ok("Produto atualizado com sucesso.");
+            return Ok(new { menssagem = "Produto atualizado com sucesso." });
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Erro ao atualizar o produto: {ex.Message}");
+            return StatusCode(500, new { erro = $"Erro ao atualizar o produto: {ex.Message}" });
         }
     }
 
@@ -121,17 +121,17 @@ public class ProdutoController : ControllerBase
         var produtoExistente = await _produtoRepository.GetProdutoById(id);
         if (produtoExistente is null)
         {
-            return NotFound("Produto não encontrado para exclusão.");
+            return NotFound(new { erro = "Produto não encontrado para exclusão." });
         }
 
         try
         {
             await _produtoRepository.DeleteProduto(id);
-            return Ok("Produto excluído com sucesso.");
+            return Ok(new { menssagem = "Produto excluído com sucesso." });
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Erro ao excluir o produto: {ex.Message}");
+            return StatusCode(500, new { erro = $"Erro ao excluir o produto: {ex.Message}" });
         }
     }
 

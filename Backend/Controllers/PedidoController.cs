@@ -34,11 +34,23 @@ public class PedidoController : ControllerBase
 
             return NotFound(new { erro = "Nenhum pedido encontrado." });
         }
-        else
+        var resposta = pedidos.Select(p => new
         {
+            id = p.Id,
+            total = p.ValorTotal,
+            status = p.Status.ToString(),
+            date = p.DataHora,
+            customer = p.Cliente?.Nome ?? "Cliente",
+            table = p.Cliente?.Mesa,
+            items = p.Itens.Select(i => new
+            {
+                qty = i.Quantidade,
+                name = i.Produto?.Nome,
+                price = i.PrecoUnitario
+            })
+        });
 
-            return Ok(pedidos);
-        }
+        return Ok(resposta);
 
     }
 
@@ -48,18 +60,31 @@ public class PedidoController : ControllerBase
     public async Task<IActionResult> GetPedidoById(int id)
     {
 
-        var pedido = await _pedidoRepository.GetPedidoById(id);
+        var p = await _pedidoRepository.GetPedidoById(id);
 
-        if (pedido is null)
+        if (p is null)
         {
 
             return NotFound(new { erro = "Pedido não encontrado." });
         }
-        else
+        
+        var pedido = new
         {
+            id = p.Id,
+            total = p.ValorTotal,
+            status = p.Status.ToString(),
+            date = p.DataHora,
+            customer = p.Cliente?.Nome ?? "Cliente",
+            table = p.Cliente?.Mesa,
+            items = p.Itens.Select(i => new
+            {
+                qty = i.Quantidade,
+                name = i.Produto?.Nome,
+                price = i.PrecoUnitario
+            })
+        };
 
-            return Ok(pedido);
-        }
+        return Ok(pedido);
 
     }
 
