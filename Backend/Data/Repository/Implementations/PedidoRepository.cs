@@ -33,10 +33,11 @@ public class PedidoRepository: IPedidoRepository
     }
 
     public async Task AddPedido(Pedido pedido)
-    {
-       await _context.Pedidos.AddAsync(pedido);
-       await  _context.SaveChangesAsync();
-    }
+{
+    await _context.Pedidos.AddAsync(pedido);
+    await _context.SaveChangesAsync();
+}
+
 
     public async Task UpdatePedido(Pedido pedido)
     {

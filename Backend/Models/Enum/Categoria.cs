@@ -3,6 +3,5 @@ public enum Categoria
 {
     Hamburguer,
     pizza,
-    Bebida,
-    Acompanhamento
+    Bebida
 }

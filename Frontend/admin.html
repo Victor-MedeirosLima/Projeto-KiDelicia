@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Painel Administrativo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- TOPO -->
+  <div class="topbar">
+    <h1>Painel Administrativo</h1>
+    <a href="index.html" class="back-link">Voltar ao Cardápio</a>
+  </div>
+
+  <div class="admin-main">
+
+    <!-- ================================================================== -->
+    <!--                    PRODUTOS (COLLAPSE RECOLHÍVEL)                  -->
+    <!-- ================================================================== -->
+
+    <h2 class="collapse-title" id="toggle-produtos">Gerenciar Produtos</h2>
+
+    <div id="produtos-collapse" class="collapse-content">
+
+      <!-- MENU DE GERENCIAMENTO DE PRODUTOS -->
+      <div class="menu-admin">
+        <button id="btn-new-item">Adicionar Produto</button>
+      </div>
+
+      <!-- LISTA DE PRODUTOS -->
+      <div id="items-list"></div>
+
+    </div>
+
+
+
+    <!-- ================================================================== -->
+    <!--                             PEDIDOS                                -->
+    <!-- ================================================================== -->
+
+    <h2>Pedidos</h2>
+
+    <!-- FILTRO -->
+    <div class="filtros">
+      <label for="filtro-status">Filtrar por status:</label>
+      <select id="filtro-status">
+        <option value="todos">Todos</option>
+        <option value="Recebido">Recebido</option>
+        <option value="EmPreparo">Em preparo</option>
+        <option value="Pronto">Pronto</option>
+        <option value="Entregue">Entregue</option>
+      </select>
+    </div>
+
+    <!-- NOTIFICAÇÃO -->
+    <div id="notificacao" class="notificacao" style="display:none;">
+      Novo pedido recebido!
+    </div>
+
+    <!-- TABELA DE PEDIDOS -->
+    <table id="tabela-pedidos">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Data/Hora</th>
+          <th>Cliente / Mesa</th>
+          <th>Itens</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+
+  <!-- SCRIPT DO COLLAPSE -->
+  <script>
+  // garante que o DOM esteja pronto e que o admin.js já tenha rodado
+  window.addEventListener('DOMContentLoaded', () => {
+    const collapseTitle = document.getElementById("toggle-produtos");
+    const collapseContent = document.getElementById("produtos-collapse");
+    if (!collapseTitle || !collapseContent) {
+      console.warn("Collapse: elementos não encontrados.");
+      return;
+    }
+    // inicia fechado
+    collapseContent.classList.remove("open");
+    collapseTitle.classList.remove("active");
+
+    collapseTitle.addEventListener("click", () => {
+      collapseContent.classList.toggle("open");
+      collapseTitle.classList.toggle("active");
+    });
+  });
+</script>
+
+
+</body>
+</html>

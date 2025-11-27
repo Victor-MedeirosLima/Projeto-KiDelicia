@@ -90,56 +90,60 @@ public class PedidoController : ControllerBase
 
 
     [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> CreatePedido([FromBody] PedidoCreateDto dto)
+public async Task<IActionResult> CreatePedido([FromBody] PedidoCreateDto dto)
+{
+    try
     {
-        try
-        {
-            var cliente = await _clienteRepository.GetClienteById(dto.ClienteId);
-            if (cliente == null)
-                return BadRequest(new { erro=$"Cliente com ID {dto.ClienteId} não encontrado." });
+        var cliente = await _clienteRepository.GetClienteById(dto.ClienteId);
+        if (cliente == null)
+            return BadRequest(new { erro = $"Cliente com ID {dto.ClienteId} não encontrado." });
 
-            var pedido = new Pedido
+        var pedido = new Pedido
+        {
+            ClienteId = dto.ClienteId,
+            DataHora = DateTime.UtcNow,
+            Status = PedidoStatus.Recebido
+        };
+
+        await _pedidoRepository.AddPedido(pedido);
+        
+
+        decimal total = 0;
+        var itens = new List<Itens>();
+
+        
+        foreach (var itemDto in dto.Itens)
+        {
+            var produto = await _produtoRepository.GetProdutoById(itemDto.ProdutoId);
+            if (produto == null)
+                return BadRequest(new { erro = $"Produto com ID {itemDto.ProdutoId} não encontrado." });
+
+            var item = new Itens
             {
-                ClienteId = dto.ClienteId,
-                DataHora = DateTime.UtcNow,
-                Status = PedidoStatus.Recebido,
-                Itens = new List<Itens>()
+                PedidoId = pedido.Id,
+                ProdutoId = produto.Id,
+                Quantidade = itemDto.Quantidade,
+                PrecoUnitario = produto.Preco
             };
 
-            decimal total = 0;
-
-            foreach (var itemDto in dto.Itens)
-            {
-                var produto = await _produtoRepository.GetProdutoById(itemDto.ProdutoId);
-                if (produto == null)
-                    return BadRequest(new { erro = $"Produto com ID {itemDto.ProdutoId} não encontrado." });
-
-                var item = new Itens
-                {
-                    ProdutoId = produto.Id,
-                    Quantidade = itemDto.Quantidade,
-                    PrecoUnitario = produto.Preco
-                };
-
-                total += produto.Preco * itemDto.Quantidade;
-                pedido.Itens.Add(item);
-            }
-
-            pedido.ValorTotal = total;
-
-            await _pedidoRepository.AddPedido(pedido);
-
-            return CreatedAtAction(nameof(GetPedidoById), new { id = pedido.Id }, pedido);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { erro = $"Erro interno ao criar o pedido: {ex.InnerException?.Message ?? ex.Message}" });
+            total += produto.Preco * itemDto.Quantidade;
+            itens.Add(item);
         }
 
+        
+        pedido.Itens = itens;
+        pedido.ValorTotal = total;
 
+        await _pedidoRepository.UpdatePedido(pedido);
 
+        return CreatedAtAction(nameof(GetPedidoById), new { id = pedido.Id }, pedido);
     }
+    catch (Exception ex)
+    {
+        return StatusCode(500, new { erro = $"Erro interno ao criar o pedido: {ex.InnerException?.Message ?? ex.Message}" });
+    }
+}
+
 
     
     [HttpPut("{id}")]
@@ -161,8 +165,7 @@ public class PedidoController : ControllerBase
         {
             
             pedidoExistente.Status = update.Status;           
-            pedidoExistente.DataHora = DateTime.UtcNow;
-            
+           
 
 
             await _pedidoRepository.UpdatePedido(pedidoExistente);

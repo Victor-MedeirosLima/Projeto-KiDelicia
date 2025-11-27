@@ -1,0 +1,29 @@
+[
+  {
+    "id": "p1",
+    "name": "X-Burger",
+    "category": "Lanches",
+    "shortDesc": "Hambúrguer e queijo",
+    "desc": "Alface, tomate, hambúrguer e queijo.",
+    "price": 8.00,
+    "image": "assets/cardapio1.jpg"
+  },
+  {
+    "id": "p2",
+    "name": "X-Frango tudo",
+    "category": "Lanches",
+    "shortDesc": "Frango, bacon, queijo",
+    "desc": "Alface, tomate, ovo, filé de frango, salsicha, bacon, presunto e queijo.",
+    "price": 19.00,
+    "image": "assets/cardapio1.jpg"
+  },
+  {
+    "id": "p3",
+    "name": "Pizza Muçarela",
+    "category": "Pizzas",
+    "shortDesc": "muçarela e tomate",
+    "desc": "Azeitona, muçarela e tomate.",
+    "price": 52.00,
+    "image": "assets/cardapio2.jpg"
+  }
+]

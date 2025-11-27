@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KiDelícia - Cardápio Digital</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>KiDelícia</h1>
+    <nav>
+      <button class="nav-btn active" data-route="menu">Cardápio</button>
+      <button class="nav-btn" data-route="pedidos">Pedidos</button>
+      <button class="nav-btn" data-route="admin">Área Admin</button>
+      <div id="cart-indicator" class="cart-indicator">🛒 <span id="cart-count">0</span></div>
+    </nav>
+  </header>
+
+  <main id="app">
+    <!-- Conteúdo dinâmico será inserido aqui -->
+  </main>
+
+  <!-- Modal de Detalhes -->
+  <div id="modal" class="modal hidden" role="dialog" aria-hidden="true">
+    <div class="modal-content" id="modal-content"></div>
+  </div>
+
+  
+
+  <!-- Script principal da SPA -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
